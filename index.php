@@ -30,6 +30,7 @@
 
     var CityCollection = Backbone.Collection.extend({
         model: CityModel,
+        url: 'data.php'
     });
 
 
@@ -70,12 +71,10 @@
         start: function() {
         },
         success: function() {
-            var cities = new CityCollection([
-                {name: "Kherson"},
-                {name: "RigA"},
-                {name: "sTAMBUL"}
-            ]);
-            $('#city-list').html(new CityListView({model: cities}).render().el)
+            this.cities = new CityCollection();
+            this.cities.fetch({success: function() {
+                    $('#city-list').html(new CityListView({model: app.cities}).render().el);
+                }});
         },
         error: function() {
             alert('error');
