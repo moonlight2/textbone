@@ -14,7 +14,7 @@
 
 <script type="text/template" id="city"> 
     <%= name %> 
-    <button id='click'>Event</button>
+    <button class='click'>Event</button>
 </script>
 
 <div id="city-list"></div>
@@ -25,12 +25,26 @@
     var CityModel = Backbone.Model.extend({
         defaults: {
             "name": "",
+        },
+        parse: function(response) {
+            return response;
         }
     });
 
+
     var CityCollection = Backbone.Collection.extend({
         model: CityModel,
-        url: 'data.php'
+        url: 'api',
+        parse: function(response) {
+            var users = response.names.User;
+            var resp = Array();
+            
+            for (var i = 0; i < users.length; i ++) {
+                var arr = {name: users[i]};
+                resp[i] = arr;
+            }
+            return resp;
+        }
     });
 
 
@@ -38,6 +52,7 @@
         tagName: 'ul',
         initialize: function() {
             this.model.bind('reset', this.render, this);
+//            this.model.bind('add', this.render, this);
         },
         render: function() {
             _.each(this.model.models, function(city) {
@@ -71,9 +86,14 @@
         start: function() {
         },
         success: function() {
-            this.cities = new CityCollection();
+            this.cities = new CityCollection({url: '/some/other/url'});
+            this.cities.url = 'api/4';
+
+//            this.cities.fetch({ data:{ url: 'api/2'}, processData: true });
+
             this.cities.fetch({success: function() {
                     $('#city-list').html(new CityListView({model: app.cities}).render().el);
+                    console.log(new CityListView({model: app.cities}).render().el);
                 }});
         },
         error: function() {
