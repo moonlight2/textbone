@@ -13,7 +13,8 @@
 </p>
 
 <script type="text/template" id="city"> 
-    <%= name %> 
+    <%= name %><br> 
+    <%= email %> 
     <button class='click'>Event</button>
 </script>
 
@@ -25,6 +26,7 @@
     var CityModel = Backbone.Model.extend({
         defaults: {
             "name": "",
+            "email": "",
         },
         parse: function(response) {
             return response;
@@ -35,13 +37,11 @@
     var CityCollection = Backbone.Collection.extend({
         model: CityModel,
         url: 'api',
-        parse: function(response) {
-            var users = response.names.User;
+        parse: function(users) {
             var resp = Array();
-            
             for (var i = 0; i < users.length; i ++) {
-                var arr = {name: users[i]};
-                resp[i] = arr;
+                var model = {name: users[i][0], email: users[i][1]};
+                resp[i] = model;
             }
             return resp;
         }

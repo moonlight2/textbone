@@ -10,13 +10,11 @@ if ($url == 2) {
     echo '{"COLUMNS":["BRAND","MODEL","COLOR"],"DATA":[["Ford","Figo","RED"],["Ford","Fiesta","BLACK"],["Honda","CRV","GREEN"],["Honda","CITY","WHITE"]]}';
 } else if ($url == 4) {
 
-    echo json_encode(array('names' => array(
-            'User' => array(
-                array('Ilia'),
-                array('Lilia')
+    echo json_encode(array(
+                array('Ilia', 'ilia@mail.ru'),
+                array('Lilia', 'lilia@mail.ry')
             )
-        )
-    ));
+    );
     //echo '{"names":["User":{"name":"Ilia"}]}';
 }
 
